@@ -3,4 +3,6 @@
 /lib
 /__pycache__
 logs/*
+!logs/.gitkeep 
 debug/*
+!debug/.gitkeep 
