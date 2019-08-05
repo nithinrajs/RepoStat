@@ -92,11 +92,11 @@ def script():
 
 
 sched = BackgroundScheduler(daemon=True)
-sched.add_job(script, 'interval', minutes=1)
+sched.add_job(script, 'interval', minutes=10)
 sched.start()
 
 slack_sched = BackgroundScheduler(daemon=True)
-slack_sched.add_job(slack_stats, 'interval', minutes=3)
+slack_sched.add_job(slack_stats, 'interval', minutes=15)
 slack_sched.start()
 
 
