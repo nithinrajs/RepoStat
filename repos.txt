@@ -353,6 +353,7 @@ zendesk/zendesk-sell-for-zapier
 zendesk/team-burrito-ops
 zendesk/apt-s3
 zendesk/camo
+zendesk/chef-sentry
 zendesk/platform
 zendesk/product_security_challenge
 zendesk/pa_apps
