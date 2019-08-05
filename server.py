@@ -56,13 +56,13 @@ def hello():
 
 @app.route("/script")
 def script():
-    # GIT_TOKEN = os.environ.get('GIT_TOKEN')
+    GIT_TOKEN = os.environ.get('GIT_TOKEN')
 
     r = []
     now = datetime.datetime.now()
     log = now.strftime("%Y-%m-%d %H:%M")
 
-    gh = Github()
+    gh = Github(GIT_TOKEN)
     org = gh.get_organization('zendesk')
     public_repos = org.get_repos()
     for repo in public_repos:
