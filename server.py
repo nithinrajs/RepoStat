@@ -24,8 +24,8 @@ def slack_stats(update=False, changes=[]):
         app.logger.warning(
             "\n****EOD ( %s )****\n" % log)
 
-        # response = client.chat_postMessage(
-        #     channel='#security', text="No changes to the Zendesk Public Repo's!")
+        response = client.chat_postMessage(
+            channel='#security', text="I am doing well on Heroku!")
 
     # elif(not update and change_flag != 0):
     #     app.logger.warning(
@@ -36,8 +36,9 @@ def slack_stats(update=False, changes=[]):
 
     elif (update and len(changes) != 0):
         l = '\n'.join(changes)
-        m = "**** Changes were made to the Zendesk Public Repo's! ****\n"
+        m = "*Changes were made to the Zendesk Public Repo's!*\n"
         message = m+l
+        message = "```" + message + "```"
         response = client.chat_postMessage(
             channel='#security', text=message)
 
@@ -46,6 +47,11 @@ def slack_stats(update=False, changes=[]):
 
 
 app = Flask(__name__)
+
+
+@app.route("/")
+def hello():
+    return "Hello World!"
 
 
 @app.route("/script")
@@ -90,7 +96,7 @@ sched.add_job(script, 'interval', minutes=1)
 sched.start()
 
 slack_sched = BackgroundScheduler(daemon=True)
-slack_sched.add_job(slack_stats, 'interval', minutes=5)
+slack_sched.add_job(slack_stats, 'interval', minutes=3)
 slack_sched.start()
 
 
@@ -99,7 +105,8 @@ if __name__ == "__main__":
         './debug/progress.log', maxBytes=10000, backupCount=2)
     handler.setLevel(logging.INFO)
     app.logger.addHandler(handler)
-    app.run()
+    port = int(os.environ.get("PORT", 33507))
+    app.run(host='0.0.0.0', port=port)
 
 
 '''
