@@ -7,6 +7,8 @@ from data import current_repo_list
 from apscheduler.schedulers.background import BackgroundScheduler
 import os
 import datetime
+import boto3
+from boto3.session import Session
 
 
 def repo_diff(current, updated):
@@ -23,6 +25,21 @@ def slack_stats(update=False, changes=[]):
     if (not update):
         app.logger.warning(
             "\n****EOD ( %s )****\n" % log)
+
+        ''' Session for AWS S3 Bucket '''
+        AWS_ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY')
+        AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
+
+        session = Session(AWS_ACCESS_KEY, AWS_SECRET_KEY)
+        s3 = session.client('s3')
+        folder = "test/debug/"  # Folder inside the S3 Buckets for the Logs
+
+        filename = "progress.log"
+        path = "./debug/"
+
+        s3.upload_file(path+filename, 'repostat-bucker', folder+filename)
+
+        ''' ######################  '''
 
         response = client.chat_postMessage(
             channel='#security', text="I am doing well on Heroku!")
@@ -73,9 +90,23 @@ def script():
     if (len(r) != len(current_list)):
         app.logger.info("New Repos Added!\n")
 
-        with open("./logs/repos-%s.txt" % log, "w") as f:
+        ''' Session for AWS S3 Bucket '''
+        AWS_ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY')
+        AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
+
+        session = Session(AWS_ACCESS_KEY, AWS_SECRET_KEY)
+        s3 = session.client('s3')
+        folder = "test/logs/"  # Folder inside the S3 Buckets for the Logs
+
+        ''' ######################  '''
+        filename = "repos-%s.txt" % log
+        path = "./logs/"
+
+        with open(path+filename, "w") as f:
             f.write("<><><><><><> Repo List Updated on %s. <><><><><><>\n" % log)
             f.write('\n'.join(r))
+
+        s3.upload_file(path+filename, 'repostat-bucker', folder+filename)
 
         with open('repos.txt', 'w') as f:
             f.write('\n'.join(r))
@@ -92,11 +123,11 @@ def script():
 
 
 sched = BackgroundScheduler(daemon=True)
-sched.add_job(script, 'interval', minutes=10)
+sched.add_job(script, 'interval', minutes=2)
 sched.start()
 
 slack_sched = BackgroundScheduler(daemon=True)
-slack_sched.add_job(slack_stats, 'interval', minutes=15)
+slack_sched.add_job(slack_stats, 'interval', minutes=3)
 slack_sched.start()
 
 
