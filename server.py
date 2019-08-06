@@ -27,17 +27,17 @@ def slack_stats(update=False, changes=[]):
             "\n****EOD ( %s )****\n" % log)
 
         ''' Session for AWS S3 Bucket '''
-        AWS_ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY')
-        AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
+        # AWS_ACCESS_KEY = os.environ.get('AWS_ACCESS_KEY')
+        # AWS_SECRET_KEY = os.environ.get('AWS_SECRET_KEY')
 
-        session = Session(AWS_ACCESS_KEY, AWS_SECRET_KEY)
-        s3 = session.client('s3')
-        folder = "test/debug/"  # Folder inside the S3 Buckets for the Logs
+        # session = Session(AWS_ACCESS_KEY, AWS_SECRET_KEY)
+        # s3 = session.client('s3')
+        # folder = "test/debug/"  # Folder inside the S3 Buckets for the Logs
 
-        filename = "progress.log"
-        path = "./debug/"
+        # filename = "progress.log"
+        # path = "./debug/"
 
-        s3.upload_file(path+filename, 'repostat-bucker', folder+filename)
+        # s3.upload_file(path+filename, 'repostat-bucker', folder+filename)
 
         ''' ######################  '''
 
@@ -96,7 +96,7 @@ def script():
 
         session = Session(AWS_ACCESS_KEY, AWS_SECRET_KEY)
         s3 = session.client('s3')
-        folder = "test/logs/"  # Folder inside the S3 Buckets for the Logs
+        folder = "RepoStat/logs/"  # Folder inside the S3 Buckets for the Logs
 
         ''' ######################  '''
         filename = "repos-%s.txt" % log
