@@ -63,7 +63,7 @@ def script():
     log = now.strftime("%Y-%m-%d %H:%M")
 
     gh = Github(GIT_TOKEN)
-    org = gh.get_organization('zendesk')
+    org = gh.get_organization()
     public_repos = org.get_repos()
     for repo in public_repos:
         r.append(repo.full_name)
