@@ -36,7 +36,7 @@ def slack_stats(update=False, changes=[]):
 
     elif (update and len(changes) != 0):
         l = '\n'.join(changes)
-        m = "*Changes were made to the Zendesk Public Repo's!*\n"
+        m = "*Changes were made to the Public Repo's!*\n"
         message = m+l
         message = "```" + message + "```"
         response = client.chat_postMessage(
